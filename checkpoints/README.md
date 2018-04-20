@@ -1,0 +1,1 @@
+Checkpoints are stored here.
