@@ -1,9 +1,15 @@
 # Learning Confidence Estimates for Neural Networks
 
-This repository contains the code for the paper [Learning Confidence for Out-of-Distribution Detection in Neural Networks](https://arxiv.org/abs/1802.04865). In this work we demonstrate how to augment neural networks with a confidence estimation branch, which can be used to identify misclassified and out-of-distribution examples. 
-  
+This repository contains the code for the paper [Learning Confidence for Out-of-Distribution Detection in Neural Networks](https://arxiv.org/abs/1802.04865). In this work, we demonstrate how to augment neural networks with a confidence estimation branch, which can be used to identify misclassified and out-of-distribution examples.  
+
 <p align="center">
 <img src="./figures/confidence_histogram.png" width="500">
+</p>
+
+To learn confidence estimates during training, we provide the neural network with "hints" towards the correct output whenever it exhibits low confidence in its predictions. Hints are provided by interpolating between the predicted distribution and the target distribution, with the amount of interpolation proportional to the network's confidence that its prediction is correct. To discourage the network from always asking for free hints, a small penalty is applied whenever it is not confident. As a result, the network learns to only produce low confidence estimates when it is likely to make an incorrect prediction.
+
+<p align="center">
+<img src="./figures/architecture.png" width="750">
 </p>
 
 Bibtex:  
