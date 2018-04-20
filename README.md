@@ -35,70 +35,68 @@ We evalute our method on the task of out-of-distribution detection using three d
 
 Train a model with a confidence estimator with `train.py`.  
 
-Arguments:  
-`--dataset [cifar10, svhn]`  
-    Selects which dataset to train on.  
-`--model [densenet, wideresnet, vgg13]`  
-    Selects which model architecture to use.  
-`--batch_size [int]`  
-    Number of samples per batch.  
-`--epochs [int]`  
-    Number of epochs for training.  
-`--seed [int]`  
-    Random seed.  
-`--learning_rate [float]`  
-    Learning rate.  
-`--data_augmentation`  
-    Train with standard data augmentation (random flipping and translation).  
-`--cutout [int]`  
-    Indicates the patch size to use for [Cutout](https://arxiv.org/abs/1708.04552). If 0, Cutout is not used.  
-`--budget [float]`  
-    Controls how often the network can choose have low confidence in its prediction. Increasing the budget will bias the output towards low confidence predictions, while decreasing the budget will produce more high confidence predictions.  
-`--baseline`  
-    Train the model without the confidence branch.  
+| Args 	| Options 	| Description 	|
+|---------|--------|----------------------------------------------------|
+| dataset 	| cifar10, <br>svhn 	| Selects which dataset to train on. 	|
+| model 	| densenet, <br>wideresnet, <br>vgg13 	| Selects which model architecture to use. 	|
+| batch_size 	| [int] 	| Number of samples per batch.	|
+| epochs 	| [int] 	| Number of epochs for training. 	|
+| seed 	| [int] 	| Random seed.	|
+| learning_rate 	| [float] 	| Learning rate. 	|
+| data_augmentation 	|  	| Train with standard data augmentation (random flipping and translation). 	|
+| cutout 	| [int] 	| Indicates the patch size to use for [Cutout](https://arxiv.org/abs/1708.04552). If 0, Cutout is not used. 	|
+| budget 	| [float] 	| Controls how often the network can choose have low confidence in its prediction. Increasing the budget will bias the output towards low confidence predictions, while decreasing the budget will produce more high confidence predictions. 	|
+| baseline 	|  	| Train the model without the confidence branch. 	|
 
 The following settings were used for the experiments in the [paper](https://arxiv.org/abs/1802.04865):  
-`python train.py --dataset cifar10 --model vgg13 --budget 0.3 --data_augmentation --cutout 16`  
-
-`python train.py --dataset cifar10 --model wideresnet --budget 0.3 --data_augmentation --cutout 16`  
-
-`python train.py --dataset cifar10 --model densenet --budget 0.3 --epochs 300 --batch_size 64--data_augmentation --cutout 16`  
-
-`python train.py --dataset svhn --model vgg13 --budget 0.3 --learning_rate 0.01 --epochs 160 --data_augmentation --cutout 20`  
-
-`python train.py --dataset svhn --model wideresnet --budget 0.3 --learning_rate 0.01 --epochs 160 --data_augmentation --cutout 20`  
-
-`python train.py --dataset svhn --model densenet --budget 0.3 --learning_rate 0.01 --epochs 300 --batch_size 64  --data_augmentation --cutout 20`  
+```
+python train.py --dataset cifar10 --model vgg13 --budget 0.3 --data_augmentation --cutout 16
+```  
+```
+python train.py --dataset cifar10 --model wideresnet --budget 0.3 --data_augmentation --cutout 16
+```  
+```
+python train.py --dataset cifar10 --model densenet --budget 0.3 --epochs 300 --batch_size 64--data_augmentation --cutout 16
+```  
+```
+python train.py --dataset svhn --model vgg13 --budget 0.3 --learning_rate 0.01 --epochs 160 --data_augmentation --cutout 20
+```  
+```
+python train.py --dataset svhn --model wideresnet --budget 0.3 --learning_rate 0.01 --epochs 160 --data_augmentation --cutout 20
+```  
+```
+python train.py --dataset svhn --model densenet --budget 0.3 --learning_rate 0.01 --epochs 300 --batch_size 64  --data_augmentation --cutout 20
+```  
 
 ### Out-of-distribution detection
 
 Evaluate a trained model with `out_of_distribution_detection.py`. Before running this you will need to download the out-of-distribution datasets from Shiyu Liang's [ODIN github repo](https://github.com/ShiyuLiang/odin-pytorch#downloading--out-of-distribtion-datasets) and modify the data paths in the file according to where you saved the datasets. 
 
-Arguments:  
-`--ind_dataset [cifar10, svhn]`  
-    Indicates which dataset to use as in-distribution. Should be the same one that the model was trained on.  
-`--ood_dataset [tinyImageNet_crop, tinyImageNet_resize, LSUN_crop, LSUN_resize, iSUN, Uniform, Gaussian, all]`  
-    Indicates which dataset to use as the out-of-distribution datset.  
-`--model [densenet, wideresnet, vgg13]`  
-    Selects which model architecture to use. Should be the same one that the model was trained on.  
-`--process [baseline, ODIN, confidence, confidence_scaling]`  
-    Indicates which method to use for out-of-distribution detection. [Baseline](https://arxiv.org/abs/1610.02136) uses the maximum softmax probability. [ODIN](https://arxiv.org/abs/1706.02690) applies  temperature scaling and input pre-processing to the baseline method. Confidence uses the learned confidence estimates. Confidence scaling applies input pre-processing to the confidence estimates.  
-`--batch_size [int]`  
-    Number of samples per batch.  
-`--T [int]`  
-    Temperature to use for temperature scaling.  
-`--epsilon [float]`  
-    Noise magnitude to use for input pre-processing.  
-`--checkpoint [str]`  
-    Filename of trained model checkpoint. Assumes the file is in the checkpoints/ folder.  
-`--validation`  
-    Use this flag for fine-tuning T and epsilon. If flag is on, the script will only evaluate on the first 1000 samples in the out-of-distribution dataset. If flag is not used, the remaining samples are used for evaluation. Based on validation procedure from [ODIN](https://arxiv.org/abs/1706.02690).  
+| Args 	| Options 	| Description 	|
+|-------------	|------------	|-------------------------------------------------------------------------	|
+| ind_dataset 	| cifar10, <br>svhn 	| Indicates which dataset to use as in-distribution. Should be the same one that the model was trained on. 	|
+| ood_dataset 	| tinyImageNet_crop, <br>tinyImageNet_resize, <br>LSUN_crop, <br>LSUN_resize, <br>iSUN, <br>Uniform, <br>Gaussian, <br>all 	| Indicates which dataset to use as the out-of-distribution datset. 	|
+| model 	| densenet, <br>wideresnet, <br>vgg13 	| Selects which model architecture to use. Should be the same one that the model was trained on. 	|
+| process 	| baseline, <br>ODIN, <br>confidence, <br>confidence_scaling 	| Indicates which method to use for out-of-distribution detection. [Baseline](https://arxiv.org/abs/1610.02136) uses the maximum softmax probability. [ODIN](https://arxiv.org/abs/1706.02690) applies temperature scaling and input pre-processing to the baseline method. Confidence uses the learned confidence estimates. Confidence scaling applies input pre-processing to the confidence estimates. 	|
+| batch_size 	| [int] 	| Number of samples per batch. 	|
+| T 	| [int] 	| Temperature to use for temperature scaling. 	|
+| epsilon 	| [int] 	| Noise magnitude to use for input pre-processing. 	|
+| checkpoint 	| [str] 	| Filename of trained model checkpoint. Assumes the file is in the checkpoints/ folder. 	|
+| validation 	|  	| Use this flag for fine-tuning T and epsilon. If flag is on, the script will only evaluate on the first 1000 samples in the out-of-distribution dataset. If flag is not used, the remaining samples are used for evaluation. Based on validation procedure from  [ODIN](https://arxiv.org/abs/1706.02690). 	|
 
-Example commands for running the out-of-distribution detection script:
-`python out_of_distribution_detection.py --ind_dataset svhn --ood_dataset all --model vgg13 --process baseline --checkpoint svhn_vgg13_budget_0.0_seed_0`  
+Example commands for running the out-of-distribution detection script:  
+```
+python out_of_distribution_detection.py --ind_dataset svhn --ood_dataset all --model vgg13 --process baseline --checkpoint svhn_vgg13_budget_0.0_seed_0
+```  
 
-`python out_of_distribution_detection.py --ind_dataset cifar10 --ood_dataset tinyImageNet_resize --model densenet --process ODIN --T 1000 --epsilon 0.001 --checkpoint cifar10_densenet_budget_0.0_seed_0`  
+```
+python out_of_distribution_detection.py --ind_dataset cifar10 --ood_dataset tinyImageNet_resize --model densenet --process ODIN --T 1000 --epsilon 0.001 --checkpoint cifar10_densenet_budget_0.0_seed_0
+```  
 
-`python out_of_distribution_detection.py --ind_dataset cifar10 --ood_dataset LSUN_crop --model vgg13 --process confidence --checkpoint cifar10_vgg13_budget_0.3_seed_0`  
+```
+python out_of_distribution_detection.py --ind_dataset cifar10 --ood_dataset LSUN_crop --model vgg13 --process confidence --checkpoint cifar10_vgg13_budget_0.3_seed_0
+```  
 
-`python out_of_distribution_detection.py --ind_dataset svhn --ood_dataset iSUN --model wideresnet --process confidence_scaling --epsilon 0.001 --checkpoint svhn_wideresnet_budget_0.3_seed_0`  
+```
+python out_of_distribution_detection.py --ind_dataset svhn --ood_dataset iSUN --model wideresnet --process confidence_scaling --epsilon 0.001 --checkpoint svhn_wideresnet_budget_0.3_seed_0
+```  
