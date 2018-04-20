@@ -39,7 +39,7 @@ We evalute our method on the task of out-of-distribution detection using three d
 
 ### Training
 
-Train a model with a confidence estimator with `train.py`.  
+Train a model with a confidence estimator with `train.py`. During training you can use visdom to see a histogram of confidence estimates from the test set.   
 
 | Args 	| Options 	| Description 	|
 |---------|--------|----------------------------------------------------|
