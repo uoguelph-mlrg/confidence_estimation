@@ -39,7 +39,7 @@ We evalute our method on the task of out-of-distribution detection using three d
 
 ### Training
 
-Train a model with a confidence estimator with `train.py`. During training you can use visdom to see a histogram of confidence estimates from the test set.   
+Train a model with a confidence estimator with `train.py`. During training you can use visdom to see a histogram of confidence estimates from the test set. Training logs will be stored in the logs/ folder, while checkpoints are stored in the checkpoints/ folder.  
 
 | Args 	| Options 	| Description 	|
 |---------|--------|----------------------------------------------------|
@@ -52,7 +52,7 @@ Train a model with a confidence estimator with `train.py`. During training you c
 | data_augmentation 	|  	| Train with standard data augmentation (random flipping and translation). 	|
 | cutout 	| [int] 	| Indicates the patch size to use for [Cutout](https://arxiv.org/abs/1708.04552). If 0, Cutout is not used. 	|
 | budget 	| [float] 	| Controls how often the network can choose have low confidence in its prediction. Increasing the budget will bias the output towards low confidence predictions, while decreasing the budget will produce more high confidence predictions. 	|
-| baseline 	|  	| Train the model without the confidence branch. 	|
+| baseline 	|  	| Train the model without the confidence branch.	|
 
 Use the following settings to replicate the experiments from the [paper](https://arxiv.org/abs/1802.04865):  
 
@@ -92,9 +92,9 @@ Evaluate a trained model with `out_of_distribution_detection.py`. Before running
 | model 	| densenet, <br>wideresnet, <br>vgg13 	| Selects which model architecture to use. Should be the same one that the model was trained on. 	|
 | process 	| baseline, <br>ODIN, <br>confidence, <br>confidence_scaling 	| Indicates which method to use for out-of-distribution detection. [Baseline](https://arxiv.org/abs/1610.02136) uses the maximum softmax probability. [ODIN](https://arxiv.org/abs/1706.02690) applies temperature scaling and input pre-processing to the baseline method. Confidence uses the learned confidence estimates. Confidence scaling applies input pre-processing to the confidence estimates. 	|
 | batch_size 	| [int] 	| Number of samples per batch. 	|
-| T 	| [int] 	| Temperature to use for temperature scaling. 	|
-| epsilon 	| [int] 	| Noise magnitude to use for input pre-processing. 	|
-| checkpoint 	| [str] 	| Filename of trained model checkpoint. Assumes the file is in the checkpoints/ folder. 	|
+| T 	| [float] 	| Temperature to use for temperature scaling. 	|
+| epsilon 	| [float] 	| Noise magnitude to use for input pre-processing. 	|
+| checkpoint 	| [str] 	| Filename of trained model checkpoint. Assumes the file is in the checkpoints/ folder. A .pt extension is also automatically added to the filename.	|
 | validation 	|  	| Use this flag for fine-tuning T and epsilon. If flag is on, the script will only evaluate on the first 1000 samples in the out-of-distribution dataset. If flag is not used, the remaining samples are used for evaluation. Based on validation procedure from  [ODIN](https://arxiv.org/abs/1706.02690). 	|
 
 Example commands for running the out-of-distribution detection script:  
