@@ -224,7 +224,6 @@ for epoch in range(args.epochs):
 
         images = Variable(images).cuda(async=True)
         labels = Variable(labels).cuda(async=True)
-        confidence_labels = Variable(torch.ones(labels.size())).cuda(async=True)
         labels_onehot = Variable(encode_onehot(labels, num_classes))
 
         cnn.zero_grad()
